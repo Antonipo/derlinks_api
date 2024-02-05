@@ -1,5 +1,24 @@
 import { connectToBD } from "../db.js";
 
+function combineResults(result1, result2) {
+  const combinedResult = [];
+  for (const group of result1) {group
+    const groupWhitLinks = {
+      group_id: group.group_id,
+      group_name: group.group_name,
+      links: [],
+    };
+
+    const linksGrupo = result2.filter(
+      (link) => link.group_id === group.group_id
+    );
+    groupWhitLinks.links=linksGrupo
+    
+    combinedResult.push(groupWhitLinks);
+  }
+  return combinedResult;
+}
+
 export const getLinks = async (req,res) => {
     try {
         const client = await connectToBD();
@@ -75,8 +94,11 @@ export const getGroups = async (req,res) => {
         const consultGroups = 'SELECT group_id,group_name FROM group_link WHERE user_id = $1';
         const values=[user_id]
         const resultGroups = await client.query(consultGroups,values);
+        const consulLinks='SELECT l.link_id,l.url,g.group_id FROM link l inner join group_link g on l.group_id=g.group_id where user_id=$1';
+        const resultLinks = await client.query(consulLinks,values);
         client.release();
-        res.send(resultGroups.rows);
+        const result =combineResults(resultGroups.rows,resultLinks.rows)
+        res.send(result)
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
