@@ -10,8 +10,9 @@ import linkRoutes from './routes/links.routes.js';
 const app= express();
 
 // para que otro servidor se pueda conectar
+const allowdOrigins = process.env.CLIENT_ORIGIN_IP.split(',');
 app.use(cors({
-    origin:process.env.CLIENT_ORIGIN_IP,
+    origin: allowdOrigins,
     credentials:true,
 }))
 
