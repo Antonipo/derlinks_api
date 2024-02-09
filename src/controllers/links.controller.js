@@ -94,7 +94,7 @@ export const getGroups = async (req,res) => {
         const consultGroups = 'SELECT group_id,group_name FROM group_link WHERE user_id = $1';
         const values=[user_id]
         const resultGroups = await client.query(consultGroups,values);
-        const consulLinks='SELECT l.link_id,l.url,g.group_id FROM link l inner join group_link g on l.group_id=g.group_id where user_id=$1';
+        const consulLinks='SELECT l.link_id,l.name,l.url,g.group_id FROM link l inner join group_link g on l.group_id=g.group_id where user_id=$1';
         const resultLinks = await client.query(consulLinks,values);
         client.release();
         const result =combineResults(resultGroups.rows,resultLinks.rows)
