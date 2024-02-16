@@ -6,7 +6,7 @@ export function createAccessToken(payload) {
       payload,
       process.env.TOKEN_SECRET,
       {
-        expiresIn: "1d",
+        expiresIn: "7d",
       },
       (err, token) => {
         if (err) console.log(err);

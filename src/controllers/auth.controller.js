@@ -32,6 +32,7 @@ export const register = async (req, res) => {
             username:result.rows[0].username,
             email:result.rows[0].email,
             create_date:result.rows[0].create_date,
+            token:token
         })
     } catch (error) {
         handleServerError(res, error);
@@ -60,6 +61,7 @@ export const login = async (req, res) => {
             user_id:resultFound.rows[0].user_id,
             username:resultFound.rows[0].username,
             email:resultFound.rows[0].email,
+            token:token
             //create_date:userFound.rows[0].create_date,
         })
     } catch (error) {
@@ -94,7 +96,7 @@ export const profile = async (req, res) => {
 export const verifyToken = async (req, res) => {
   const { token } = req.cookies;
   if (!token) {
-    return res.send(401).json({ message: "Unauthorization" });
+    return res.sendStatus(401).json({ message: "Unauthorization" });
   }
   try {
     const client = await connectToBD();
