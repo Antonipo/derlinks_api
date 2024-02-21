@@ -67,7 +67,7 @@ export const updateLink = async (req,res) => {
         const values=[name,url,group_id,link_id]
         const resultLink = await client.query(updateLink,values);
         client.release();
-        res.send(resultLink.rows[0]);
+        res.sendStatus(200);
 
     } catch (error) {
         return res.status(500).json({ message: error.message });
